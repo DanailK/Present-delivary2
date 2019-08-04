@@ -1,0 +1,56 @@
+using System;
+using System.Linq;
+
+namespace Problem_3._Present_Delivery
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var houses = Console.ReadLine().Split("@", StringSplitOptions.RemoveEmptyEntries).Select(x => int.Parse(x)).ToList();
+
+            string input = string.Empty;
+            int santaIndex= 0;
+
+            while ((input = Console.ReadLine()) != "Merry Xmas!")
+            {
+                var command = input.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList();
+                //int lenght = int.Parse(command[1]);
+
+                if (command[0] == "Jump")
+                {
+                    int lenght = int.Parse(command[1]);
+
+                    if (santaIndex+lenght>= houses.Count)
+                    {
+                        santaIndex = (santaIndex + lenght) % houses.Count;
+                    }
+                    else
+                    {
+                        santaIndex = santaIndex + lenght;
+                    }
+
+                    if (houses[santaIndex] == 0)
+                    {
+                        Console.WriteLine($"House {santaIndex } will have a Merry Christmas.");
+                    }
+                    else
+                    {
+                        houses[santaIndex] -= 2;
+                    }
+                }
+            }
+
+            int failedHous = houses.Where(x => x != 0).Count();
+            Console.WriteLine($"Santa's last position was {santaIndex }.");
+            if (failedHous > 0)
+            {
+                Console.WriteLine($"Santa has failed {failedHous} houses.");
+            }
+            else
+            {
+                Console.WriteLine("Mission was successful.");
+            }
+        }
+    }
+}
